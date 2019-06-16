@@ -1,0 +1,50 @@
+version: '3'
+services:
+  budgeting-service:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      python3 /budget-it/bin/budgeting_api.py
+    volumes:
+      - ./src:/src
+      - ./tests:/tests
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      - POSTGRES_DB=budgeting_service
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_PORT=5432
+    ports:
+      - "8005:8005"
+  
+  postgres:
+    image: postgres:9.6-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=auth_service
+    ports:
+      - "5462:5462"
+
+  rabbitmq:
+    image: rabbitmq:3.6.1-management
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl status"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    environment:
+      - RABBITMQ_DEFAULT_USER=dev
+      - RABBITMQ_DEFAULT_PASS=123456
+    ports:
+      - "5463:5463"
