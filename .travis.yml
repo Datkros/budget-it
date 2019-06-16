@@ -1,0 +1,11 @@
+language: python
+
+services:
+  - docker
+
+install:
+  - docker build -t budget-it
+  - docker run 127.0.0.1:80:80 --name budget-it budget-it
+
+# TODO  - ADD TEST 
+
