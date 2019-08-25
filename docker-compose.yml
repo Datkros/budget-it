@@ -1,19 +1,19 @@
 version: '3'
 services:
-  budgeting-service:
+  api:
     restart: always
     build:
       context: .
       dockerfile: Dockerfile
     command: >
-      python3 /budget-it/bin/budgeting_api.py
+      python3 bin/budgeting_api.py
     volumes:
-      - ./src:/src
-      - ./tests:/tests
+      - ./:/budgeting-service
     depends_on:
       - postgres
       - rabbitmq
     environment:
+      - PYTHONPATH=/budgeting-service/src
       - POSTGRES_DB=budgeting_service
       - POSTGRES_HOST=postgres
       - POSTGRES_USER=dev

@@ -1,2 +1,2 @@
 aiohttp
-dependency-injection
+dependency-injector
