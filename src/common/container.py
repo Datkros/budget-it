@@ -1,5 +1,5 @@
-import dependency_injection.containers as containers
-import dependency_injection.providers as providers
+import dependency_injector.containers as containers
+import dependency_injector.providers as providers
 
 class Core(containers.DeclarativeContainer):
     pass
